@@ -3,178 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM-WSA | Igor Soares</title>
+    <title>CRM-WSA | Tutorial de Automação</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
         }
         .hero-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 80px 0;
-            margin-bottom: 40px;
         }
         .feature-card {
             border: none;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s;
             margin-bottom: 20px;
         }
         .feature-card:hover {
             transform: translateY(-5px);
         }
-        .feature-icon {
-            font-size: 2rem;
-            color: #667eea;
-            margin-bottom: 1rem;
-        }
-        pre {
+        .step-card {
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+            padding: 20px;
             background: #f8f9fa;
+            border-radius: 0 10px 10px 0;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #fff;
             padding: 15px;
             border-radius: 5px;
-            overflow-x: auto;
+            font-family: monospace;
         }
-        .workflow-step {
-            border-left: 3px solid #667eea;
-            padding-left: 20px;
-            margin: 20px 0;
-        }
-        .github-corner:hover .octo-arm {
-            animation: octocat-wave 560ms ease-in-out;
-        }
-        @keyframes octocat-wave {
-            0%, 100% { transform: rotate(0); }
-            20%, 60% { transform: rotate(-25deg); }
-            40%, 80% { transform: rotate(10deg); }
+        .workflow-image {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
-    <!-- GitHub Corner -->
-    <a href="https://github.com/Igorofyeshu4/CRM-wsa" class="github-corner" aria-label="View on GitHub">
-        <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
-            <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-            <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-            <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
-        </svg>
-    </a>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-robot me-2"></i>CRM-WSA
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#instalacao">Instalação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#workflow">Workflow</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#configuracao">Configuração</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#exemplos">Exemplos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <!-- Hero Section -->
     <section class="hero-section text-center">
         <div class="container">
-            <h1 class="display-4 mb-4">CRM-WSA</h1>
-            <p class="lead mb-4">Automação inteligente para busca e verificação de contratos em CRM</p>
+            <h1 class="display-4 mb-4">Tutorial de Automação CRM</h1>
+            <p class="lead mb-4">Aprenda a automatizar suas buscas de contratos usando o Automa</p>
             <div class="d-flex justify-content-center gap-3">
-                <a href="#getting-started" class="btn btn-light btn-lg">
+                <a href="#instalacao" class="btn btn-light btn-lg">
                     <i class="fas fa-play me-2"></i>Começar
                 </a>
-                <a href="https://automa.site" class="btn btn-outline-light btn-lg">
-                    <i class="fas fa-book me-2"></i>Tutorial
+                <a href="https://github.com/Igorofyeshu4/CRM-wsa" class="btn btn-outline-light btn-lg">
+                    <i class="fab fa-github me-2"></i>GitHub
                 </a>
             </div>
         </div>
     </section>
 
-    <div class="container">
-        <!-- Features -->
-        <section class="mb-5">
-            <h2 class="text-center mb-4">Recursos Principais</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-search feature-icon"></i>
-                            <h5 class="card-title">Busca Automática</h5>
-                            <p class="card-text">Processe múltiplos contratos simultaneamente com validação automática.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-file-export feature-icon"></i>
-                            <h5 class="card-title">Exportação Flexível</h5>
-                            <p class="card-text">Exporte resultados para CSV ou integre diretamente com Google Sheets.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-shield-alt feature-icon"></i>
-                            <h5 class="card-title">Segurança</h5>
-                            <p class="card-text">Validação de dados e tratamento de erros integrados.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Getting Started -->
-        <section id="getting-started" class="mb-5">
-            <h2 class="text-center mb-4">Como Começar</h2>
+    <div class="container py-5">
+        <!-- Instalação -->
+        <section id="instalacao" class="mb-5">
+            <h2 class="text-center mb-4">1. Instalação do Automa</h2>
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="workflow-step">
-                        <h4>1. Instalação</h4>
-                        <p>Instale a extensão Automa do Chrome Web Store e acesse sua conta no sistema CRM.</p>
+                    <div class="step-card">
+                        <h4>1.1 Instale a Extensão</h4>
+                        <ol class="list-group list-group-numbered mb-3">
+                            <li class="list-group-item">Abra o Google Chrome</li>
+                            <li class="list-group-item">Acesse a <a href="https://chrome.google.com/webstore/detail/automa/infppggnoaenmfagbfknfkancpbljcca" target="_blank">Chrome Web Store - Automa</a></li>
+                            <li class="list-group-item">Clique em "Adicionar ao Chrome"</li>
+                            <li class="list-group-item">Confirme a instalação quando solicitado</li>
+                        </ol>
                     </div>
-                    <div class="workflow-step">
-                        <h4>2. Importação</h4>
-                        <p>Baixe e importe o arquivo workflow.json para o Automa.</p>
-                    </div>
-                    <div class="workflow-step">
-                        <h4>3. Configuração</h4>
-                        <p>Configure suas credenciais e preferências no workflow.</p>
-                    </div>
-                    <div class="workflow-step">
-                        <h4>4. Execução</h4>
-                        <p>Execute o workflow e monitore os resultados.</p>
+
+                    <div class="step-card">
+                        <h4>1.2 Verifique a Instalação</h4>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                O ícone do Automa deve aparecer na barra de extensões
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Clique no ícone para abrir o dashboard
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Examples -->
-        <section class="mb-5">
-            <h2 class="text-center mb-4">Exemplos</h2>
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>Entrada</h5>
-                    <pre><code>1234
-5678
-91011</code></pre>
+        <!-- Workflow -->
+        <section id="workflow" class="mb-5">
+            <h2 class="text-center mb-4">2. Criação do Workflow</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="step-card">
+                        <h4>2.1 Crie um Novo Workflow</h4>
+                        <ol class="list-group list-group-numbered mb-3">
+                            <li class="list-group-item">Abra o Automa Dashboard</li>
+                            <li class="list-group-item">Clique no botão "+" (Novo Workflow)</li>
+                            <li class="list-group-item">Nome: "CRM Search"</li>
+                            <li class="list-group-item">Descrição: "Busca de contratos no CRM"</li>
+                        </ol>
+                    </div>
+
+                    <div class="step-card">
+                        <h4>2.2 Estrutura do Workflow</h4>
+                        <div class="code-block mb-3">
+                            <pre>
+Workflow
+├── Input Block (Entrada de Contratos)
+├── Validation Block (Validação)
+├── Loop Block (Processamento)
+│   ├── Navigation Block (Navegação)
+│   ├── Extract Block (Extração)
+│   └── Save Block (Salvamento)
+└── Export Block (Exportação)</pre>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <h5>Saída CSV</h5>
-                    <pre><code>Contrato,Palavras-Chave,Status
+            </div>
+        </section>
+
+        <!-- Configuração -->
+        <section id="configuracao" class="mb-5">
+            <h2 class="text-center mb-4">3. Configuração dos Blocos</h2>
+            
+            <!-- Input Block -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8">
+                    <div class="step-card">
+                        <h4>3.1 Bloco de Entrada</h4>
+                        <div class="mb-3">
+                            <h5>Configurações:</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <strong>Tipo:</strong> Textarea
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Label:</strong> "Digite os números dos contratos"
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Placeholder:</strong> "Um contrato por linha"
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="code-block">
+                            <pre>
+// Validação de entrada
+function validateInput(input) {
+    const contracts = input.split('\n');
+    return contracts.every(c => /^\d{4,6}$/.test(c.trim()));
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Block -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8">
+                    <div class="step-card">
+                        <h4>3.2 Bloco de Navegação</h4>
+                        <div class="mb-3">
+                            <h5>Configurações:</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <strong>URL:</strong> Sistema CRM + Número do Contrato
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Timeout:</strong> 30000ms
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Wait Until:</strong> networkidle0
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extraction Block -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="step-card">
+                        <h4>3.3 Bloco de Extração</h4>
+                        <div class="mb-3">
+                            <h5>Seletores:</h5>
+                            <div class="code-block">
+                                <pre>
+// Seletores para extração
+{
+    "cod": "text:contains('COD:')",
+    "banco": "text:contains('BANCO')",
+    "status": ".status-label"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exemplos -->
+        <section id="exemplos" class="mb-5">
+            <h2 class="text-center mb-4">4. Exemplos Práticos</h2>
+            
+            <!-- Exemplo de Entrada -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            Entrada de Dados
+                        </div>
+                        <div class="card-body">
+                            <pre class="mb-0">1234
+5678
+91011</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            Saída CSV
+                        </div>
+                        <div class="card-body">
+                            <pre class="mb-0">Contrato,Palavras-Chave,Status
 1234,"COD:;BANCO",Encontrado
 5678,"CÓD:",Encontrado
-91011,"",Não Encontrado</code></pre>
+91011,"",Não Encontrado</pre>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Call to Action -->
-        <section class="text-center mb-5">
-            <h2 class="mb-4">Pronto para Começar?</h2>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="https://github.com/Igorofyeshu4/CRM-wsa/archive/refs/heads/main.zip" class="btn btn-primary btn-lg">
-                    <i class="fas fa-download me-2"></i>Download
-                </a>
-                <a href="https://automa.site" class="btn btn-outline-primary btn-lg">
-                    <i class="fas fa-book me-2"></i>Ver Tutorial
-                </a>
+            <!-- Dicas -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="alert alert-info">
+                        <h4 class="alert-heading">Dicas Importantes:</h4>
+                        <ul class="mb-0">
+                            <li>Sempre teste com poucos contratos primeiro</li>
+                            <li>Use delays apropriados entre requisições</li>
+                            <li>Faça backup dos resultados regularmente</li>
+                            <li>Monitore o consumo de recursos</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
+    <footer class="bg-dark text-white py-4">
         <div class="container text-center">
             <p class="mb-2">Desenvolvido com <i class="fas fa-heart text-danger"></i> por Igor Soares</p>
             <div class="social-links">
