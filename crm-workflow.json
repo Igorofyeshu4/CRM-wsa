@@ -1,0 +1,155 @@
+{
+  "name": "CRM-WSA Automation",
+  "version": "1.0.0",
+  "trigger": {
+    "type": "manual"
+  },
+  "blocks": [
+    {
+      "id": "start",
+      "type": "trigger",
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "input_contracts",
+      "type": "userInput",
+      "position": {
+        "x": 100,
+        "y": 200
+      },
+      "data": {
+        "inputs": [
+          {
+            "id": "contracts",
+            "name": "Números dos Contratos",
+            "type": "textarea",
+            "description": "Digite os números dos contratos (um por linha)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "setup_variables",
+      "type": "javascript",
+      "position": {
+        "x": 100,
+        "y": 300
+      },
+      "data": {
+        "code": "const contracts = $input.contracts.split('\\n').map(c => c.trim()).filter(c => /^\\d{4,6}$/.test(c));\nif (contracts.length === 0) {\n  alert('Insira números válidos de 4 a 6 dígitos');\n  throw new Error('Números inválidos');\n}\n$variables.set('contractList', contracts);\n$variables.set('currentIndex', 0);\n$variables.set('results', []);"
+      }
+    },
+    {
+      "id": "contracts_loop",
+      "type": "loop",
+      "position": {
+        "x": 100,
+        "y": 400
+      },
+      "data": {
+        "type": "while",
+        "condition": "$variables.currentIndex < $variables.contractList.length"
+      }
+    },
+    {
+      "id": "navigate",
+      "type": "navigate",
+      "position": {
+        "x": 100,
+        "y": 500
+      },
+      "data": {
+        "url": "https://classic.setecrm.com.br/assets/${$variables.contractList[$variables.currentIndex]}",
+        "timeout": 30000,
+        "waitForLoad": true
+      }
+    },
+    {
+      "id": "delay",
+      "type": "delay",
+      "position": {
+        "x": 100,
+        "y": 600
+      },
+      "data": {
+        "timeout": 2000
+      }
+    },
+    {
+      "id": "get_content",
+      "type": "getText",
+      "position": {
+        "x": 100,
+        "y": 700
+      },
+      "data": {
+        "selector": "body",
+        "variable": "pageContent"
+      }
+    },
+    {
+      "id": "process_data",
+      "type": "javascript",
+      "position": {
+        "x": 100,
+        "y": 800
+      },
+      "data": {
+        "code": "const content = $variables.pageContent;\nconst keywords = ['COD:', 'CÓD:', 'BANCO'];\nconst found = keywords.filter(k => content.includes(k));\n\nconst results = $variables.results;\nresults.push({\n  contract: $variables.contractList[$variables.currentIndex],\n  keywords: found,\n  status: found.length > 0 ? 'Encontrado' : 'Não encontrado',\n  timestamp: new Date().toISOString()\n});\n\n$variables.set('results', results);\n$variables.set('currentIndex', $variables.currentIndex + 1);"
+      }
+    },
+    {
+      "id": "export_csv",
+      "type": "javascript",
+      "position": {
+        "x": 100,
+        "y": 900
+      },
+      "data": {
+        "code": "const results = $variables.results;\nconst csvRows = ['Contrato,Palavras-Chave,Status,Data'];\n\nresults.forEach(r => {\n  csvRows.push(`${r.contract},\"${r.keywords.join(';')}\",${r.status},${r.timestamp}`);\n});\n\nconst blob = new Blob([csvRows.join('\\n')], {type: 'text/csv'});\nconst url = URL.createObjectURL(blob);\nconst a = document.createElement('a');\na.href = url;\na.download = `resultados_crm_${new Date().toISOString().split('T')[0]}.csv`;\na.click();\n\nalert(`Processamento concluído!\\n\\nContratos processados: ${results.length}`);"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from": "start",
+      "to": "input_contracts"
+    },
+    {
+      "from": "input_contracts",
+      "to": "setup_variables"
+    },
+    {
+      "from": "setup_variables",
+      "to": "contracts_loop"
+    },
+    {
+      "from": "contracts_loop",
+      "to": "navigate"
+    },
+    {
+      "from": "navigate",
+      "to": "delay"
+    },
+    {
+      "from": "delay",
+      "to": "get_content"
+    },
+    {
+      "from": "get_content",
+      "to": "process_data"
+    },
+    {
+      "from": "process_data",
+      "to": "contracts_loop"
+    },
+    {
+      "from": "contracts_loop",
+      "to": "export_csv",
+      "condition": "complete"
+    }
+  ]
+}
